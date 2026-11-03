@@ -1,0 +1,31 @@
+name: tanstack-start
+type: service
+from: node
+fromVersionConstraint: "^2.0.0"
+fromVersion: "2.1.3"
+guidance: GUIDANCE.md
+title: Node.js (TanStack Start)
+labels:
+- tanstack-start
+- node
+
+env:
+- name: WORKSPACE_NODE_COMMAND
+  value: workspace-node vite-start
+- name: NODE_ENV
+  value: production
+  envType: dev
+
+build:
+  dockerfile: Dockerfile
+  connect: true
+  boilerplates:
+  - name: tanstack-start
+    title: TanStack Start Boilerplate
+    repo: https://github.com/wodby/tanstack-start-boilerplate
+    branch: main
+
+workspace:
+  reload: watch
+  # Build output of the Nitro server and TanStack's generated caches.
+  ignore: ['/.output/', '/.nitro/', '/.tanstack/']
