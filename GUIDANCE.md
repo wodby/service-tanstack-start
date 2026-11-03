@@ -9,6 +9,7 @@ The service's Dockerfile copies the build context to `/usr/src/app`, runs `npm r
 - The supported production output is Nitro's Node.js server: add the `nitro()` plugin from `nitro/vite` to `vite.config.ts`, build with `vite build` and start with `node .output/server/index.mjs`. This is TanStack Start's own Node.js hosting setup.
 - The Dockerfile does not install dependencies. The pipeline does it before the image is built (`wodby ci run -- npm ci`), and `node_modules` is copied with the code. Build tools such as Vite and Nitro may stay in `devDependencies`.
 - `npm run build` runs while the image is built. Runtime variables of the service, including the link variables and secrets, are not available to it. Read them inside server functions, server routes or middleware at request time, not at module scope.
+- The image build keeps the repository's `.gitignore` and leaves out `.git`, `.output`, `.nitro` and `.tanstack`. Keep `.output` in `.gitignore`: Tailwind CSS skips the files it lists, and without that the server build generates a different stylesheet than the client build, so a stylesheet imported with `?url` is linked under a name that does not exist. A plain `import './app.css'` in the root route avoids that in any case.
 - The application must listen on port 3000. The Nitro server listens on `PORT` and defaults to 3000; leave `PORT` unset.
 
 ## Variables the service sets

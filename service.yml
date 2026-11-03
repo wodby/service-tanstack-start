@@ -18,6 +18,15 @@ env:
 
 build:
   dockerfile: Dockerfile
+  # Unlike the default build context, .gitignore stays in: Tailwind CSS reads it
+  # to skip the build output, or the server and client builds generate
+  # different stylesheets and pages link a file that does not exist.
+  dockerignoreContent: |
+    .git
+    .wodby-ci-cache
+    .output
+    .nitro
+    .tanstack
   connect: true
   boilerplates:
   - name: tanstack-start
